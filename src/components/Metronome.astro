@@ -1,13 +1,30 @@
 ---
+interface Props {
+}
 
-
+const {
+} = Astro.props;
 ---
-
 <div id="metronome">
-  <strong>Metronome</strong>
+  <h1>Metronome</h1>
+  <h5>Pick your BPM</h5>
+  <div id="bpm">{}</div>
 </div>
+<script>
+
+  import {bpm} from '../stores';
+  const bpmDiv = document.getElementById("bpm");
+
+  if(bpmDiv) {
+    bpmDiv.innerText= JSON.stringify(bpm.value);
+  }
+</script>
 <style>
   #metronome {
     margin-top: 1rem;
+  }
+
+  #bpm {
+    cursor: pointer;
   }
 </style>

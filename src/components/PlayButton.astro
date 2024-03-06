@@ -1,70 +1,75 @@
 ---
 interface Props {
+  bpm?: number;
 }
 
-const {  } = Astro.props;
+const {
+  bpm = 80
+} = Astro.props;
 ---
-<div class="record">
+<div id="record">
   <strong id="recording-icon">Record</strong>
-  <section class="sound"></section>
+  <section id="sound"></section>
 </div>
 <script>
-  const record = document.querySelector('.record');
-  const sound = document.querySelector('.sound');
-  const icon = document.querySelector("#recording-icon");
+  const record = document.getElementById("record");
+  const sound = document.getElementById("sound");
+  const icon = document.getElementById("recording-icon");
 
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    let chunks = [];
-  console.log("getUserMedia supported.");
-  navigator.mediaDevices
-    .getUserMedia(
-      {
+    let chunks: BlobPart[] = [];
+
+    console.log("getUserMedia supported.");
+    navigator.mediaDevices
+      .getUserMedia({
         audio: true,
-      },
-    )
+      })
 
-    // Success callback
-    .then((stream) => {
-      const mediaRecorder = new MediaRecorder(stream);
+      // Success callback
+      .then((stream) => {
+        const mediaRecorder = new MediaRecorder(stream);
 
-      // record audio..
-      record.onclick = function() {
-        console.log("state", mediaRecorder.state)
-        if (mediaRecorder.state === "inactive") {
-          mediaRecorder.start()
-          record.style.background = "red";
-          icon.innerText = "Recording"
-        } else {
-          mediaRecorder.stop()
-          record.style.background = "black";
-          icon.innerText = "Playing"
+        if (record && icon) {
+          // record audio..
+          record.onclick = function () {
+            console.log("state", mediaRecorder.state);
+            if (mediaRecorder.state === "inactive") {
+              mediaRecorder.start();
+              record.style.background = "red";
+              icon.innerText = "Recording";
+            } else {
+              mediaRecorder.stop();
+              record.style.background = "black";
+              icon.innerText = "Playing";
+            }
+          };
         }
-      }
 
-      // turn recorded audio to blob data and immediately play it back
-      mediaRecorder.onstop = function (e) {
-        const blob = new Blob(chunks, {type: mediaRecorder.mimeType })
-        chunks = [];
-        const audioUrl = window.URL.createObjectURL(blob);
-        const au = new Audio(audioUrl);
-        au.play();
-      }
+        // turn recorded audio to blob data and immediately play it back
+        mediaRecorder.onstop = function (e) {
+          const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
+          chunks = [];
+          const audioUrl = window.URL.createObjectURL(blob);
+          const au = new Audio(audioUrl);
+          au.loop = true;
+          au.play();
+        };
 
-      // update chunks with audio as it streams in
-      mediaRecorder.ondataavailable = function(e) {
-        chunks.push(e.data);
-      }
-    })
-    // Error callback
-    .catch((err) => {
-      console.error(`The following getUserMedia error occurred: ${err}`);
-    });
-} else {
-  console.log("getUserMedia not supported on your browser!");
-}
+        // update chunks with audio as it streams in
+        mediaRecorder.ondataavailable = function (e) {
+          chunks.push(e.data);
+        };
+      })
+      // Error callback
+      .catch((err) => {
+        console.error(`The following getUserMedia error occurred: ${err}`);
+      });
+  } else {
+    console.log("getUserMedia not supported on your browser!");
+  }
 </script>
 <style>
   .button {
-    cursor: pointer
+    cursor: pointer;
   }
 </style>
