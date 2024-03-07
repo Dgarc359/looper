@@ -3,19 +3,41 @@
 ---
 
 <script>
-  import {Metronome} from '../lib/metronome';
+  import block from '../../public/block.wav'
   import {metronome} from '../stores'
+  import * as Tone from 'tone';
 
+  const tone = new Tone.Oscillator({
+    type: "sine",
+    frequency: 440,
+    volume: -16
+  }).toDestination();
+
+  const player = new Tone.Player(block)
+  const tb = new Tone.ToneAudioBuffer();
 
   metronome.subscribe((conf) => {
-    const audioContext = new window.AudioContext()
-    const m = new Metronome(conf.bpm,audioContext);
+    Tone.Transport.bpm.value = conf.bpm;
+    tb.onload = function() {
+      player.loop = true;
+      // Tone.Transport.scheduleRepeat(function(time) {
+      //   console.log("playing audio")
+      //   player.start(time)
+      // }, "4n")
+    }
+
     if(!conf.isMuted) {
       console.log("starting")
-      m.start()
+      // player.start();
+      tone.start()
+      // Tone.start();
+      // Tone.Transport.start();
     } else {
       console.log("stopping")
-      m.stop()
+      // Tone.stop();
+      tone.stop()
+      // Tone.Transport.stop();
+      // player.stop();
     }
   })
 </script>
