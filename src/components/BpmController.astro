@@ -1,0 +1,60 @@
+---
+---
+<div id="bpm-controller">
+  <h5>Pick your BPM</h5>
+  <div id="controls">
+    <div id="increase">^</div>
+    <div id="bpm"></div>
+    <div id="decrease">v</div>
+  </div>
+</div>
+<script>
+  import { bpm } from "../stores";
+  const bpmDiv = document.getElementById("bpm");
+  const increaseBpm = document.getElementById("increase");
+  const decreaseBpm = document.getElementById("decrease");
+
+  if (bpmDiv) {
+    bpm.subscribe((b) => {
+      bpmDiv.innerText = bpm.get().toString()
+      console.log("bpm", bpm.get())
+    });
+
+    bpmDiv.oninput = function(e) {
+      // TODO: add debounce
+      console.log(e.target!.value, bpmDiv.innerHTML)
+      bpm.set(e.target!.value);
+    }
+
+    bpmDiv.onsubmit = function(e) {
+      console.log(e)
+    }
+  }
+  if (increaseBpm) {
+    increaseBpm.addEventListener("click", () => {
+      console.log("clicked", bpm.get());
+      bpm.set(bpm.get() + 1);
+    });
+  }
+  if (decreaseBpm) {
+    decreaseBpm.addEventListener("click", () => {
+      console.log("clicked", bpm.get());
+      bpm.set(bpm.get() - 1);
+    });
+  }
+</script>
+<style>
+  #controls {
+    display: flex;
+    gap: 1rem;
+  }
+
+  #increase, #decrease {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  #bpm {
+    user-select: none;
+  }
+</style>

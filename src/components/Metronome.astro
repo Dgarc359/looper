@@ -1,30 +1,27 @@
 ---
-interface Props {
-}
+interface Props {}
 
-const {
-} = Astro.props;
+const {} = Astro.props;
+import BpmController from './BpmController.astro';
+import MuteController from './MuteController.astro';
 ---
 <div id="metronome">
   <h1>Metronome</h1>
-  <h5>Pick your BPM</h5>
-  <div id="bpm">{}</div>
+  <div id="controls">
+    <MuteController/>
+    <BpmController/>
+  </div>
+  
 </div>
 <script>
-
-  import {bpm} from '../stores';
-  const bpmDiv = document.getElementById("bpm");
-
-  if(bpmDiv) {
-    bpmDiv.innerText= JSON.stringify(bpm.value);
-  }
 </script>
 <style>
   #metronome {
     margin-top: 1rem;
   }
 
-  #bpm {
-    cursor: pointer;
+  #controls {
+    display: flex;
+    gap: 2rem;
   }
 </style>

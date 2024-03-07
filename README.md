@@ -18,3 +18,7 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## References and Credits
+https://grantjam.es/creating-a-simple-metronome-using-javascript-and-the-web-audio-api/
+https://docs.astro.build/en/recipes/sharing-state/

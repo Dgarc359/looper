@@ -8,20 +8,9 @@ import PlayButton from './PlayButton.astro'
   <Metronome/>
 </div>
 <script>
-
   const metronome = document.getElementById("metronome");
   if (metronome) {
     console.log(metronome)
-    let bpm = 80;
-    metronome.setAttribute("bpm", bpm.toString());
-
-    // TODO: listen for event bubbled up from clicking some other elem
-    // or... find other element inside metronome by ID and add event list there
-    metronome.addEventListener("click", function(e) {
-      console.log("clicked", e)
-      bpm = 90;
-      metronome.setAttribute("bpm", bpm.toString());
-    })
   }
 </script>
 <style/>
