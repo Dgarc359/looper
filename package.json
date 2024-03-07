@@ -12,7 +12,11 @@
   "dependencies": {
     "@astrojs/check": "^0.5.6",
     "astro": "^4.4.11",
+    "lodash": "^4.17.21",
     "nanostores": "^0.10.0",
     "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.202"
   }
 }

@@ -9,37 +9,30 @@
   </div>
 </div>
 <script>
-  import { bpm } from "../stores";
+  import { metronome } from "../stores";
+  import _ from 'lodash';
   const bpmDiv = document.getElementById("bpm");
   const increaseBpm = document.getElementById("increase");
   const decreaseBpm = document.getElementById("decrease");
 
   if (bpmDiv) {
-    bpm.subscribe((b) => {
-      bpmDiv.innerText = bpm.get().toString()
-      console.log("bpm", bpm.get())
+    metronome.subscribe((b) => {
+      bpmDiv.innerText = b.bpm.toString()
+      console.log("bpm", metronome.get().bpm)
     });
-
-    bpmDiv.oninput = function(e) {
-      // TODO: add debounce
-      console.log(e.target!.value, bpmDiv.innerHTML)
-      bpm.set(e.target!.value);
-    }
-
-    bpmDiv.onsubmit = function(e) {
-      console.log(e)
-    }
   }
+
   if (increaseBpm) {
     increaseBpm.addEventListener("click", () => {
-      console.log("clicked", bpm.get());
-      bpm.set(bpm.get() + 1);
+      metronome.set(_.merge(metronome.get(), {bpm: metronome.get().bpm + 1}));
+      console.log("clicked", metronome.get());
     });
   }
+
   if (decreaseBpm) {
     decreaseBpm.addEventListener("click", () => {
-      console.log("clicked", bpm.get());
-      bpm.set(bpm.get() - 1);
+      metronome.set(_.merge(metronome.get(), {bpm: metronome.get().bpm - 1}));
+      console.log("clicked", metronome.get());
     });
   }
 </script>

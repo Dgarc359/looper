@@ -1,26 +1,30 @@
 ---
+
 ---
+
 <div>
   <h5>Mute</h5>
   <div id="toggle-mute"></div>
 </div>
 <script>
-  import { metronomeIsMuted } from "../stores";
+  import { metronome } from "../stores";
+  import _ from "lodash";
   const toggle = document.getElementById("toggle-mute");
 
-  if(toggle) {
-    toggle.onclick = function() {
-      console.log("clicked toggle", metronomeIsMuted.get());
-      metronomeIsMuted.set(!metronomeIsMuted.get())
-    }
-    metronomeIsMuted.subscribe((val) => {
-      if(val === true) {
-        toggle.innerText = "TOGGLE"
-      } else {
-        toggle.innerText = "TOGGLED"
-      }
-    })
+  if (toggle) {
+    toggle.onclick = function () {
+      console.log("clicked toggle", metronome.get());
+      metronome.setKey("isMuted", !metronome.get().isMuted);
+    };
 
+    metronome.subscribe((val) => {
+      if (val.isMuted === true) {
+        toggle.innerText = "TOGGLE";
+      } else {
+        console.log("toggling mute");
+        toggle.innerText = "TOGGLED";
+      }
+    });
   }
 </script>
 <style>

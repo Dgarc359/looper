@@ -1,0 +1,21 @@
+---
+
+---
+
+<script>
+  import {Metronome} from '../lib/metronome';
+  import {metronome} from '../stores'
+
+
+  metronome.subscribe((conf) => {
+    const audioContext = new window.AudioContext()
+    const m = new Metronome(conf.bpm,audioContext);
+    if(!conf.isMuted) {
+      console.log("starting")
+      m.start()
+    } else {
+      console.log("stopping")
+      m.stop()
+    }
+  })
+</script>
