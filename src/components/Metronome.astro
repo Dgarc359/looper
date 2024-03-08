@@ -3,15 +3,13 @@ interface Props {}
 
 const {} = Astro.props;
 import BpmController from './BpmController.astro';
-import MuteController from './MuteController.astro';
 import AudioPlayer from './AudioPlayer.astro';
 ---
 <div id="metronome">
   <h1>Metronome</h1>
   <div id="controls">
-    <MuteController/>
-    <BpmController/>
     <AudioPlayer/>
+    <BpmController/>
   </div>
 </div>
 <script>

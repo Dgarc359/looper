@@ -1,43 +1,76 @@
 ---
-
+import MuteController from "./MuteController.astro";
 ---
 
+<div id="mute-container">
+  <MuteController id="mute-controller" />
+  <div id="mute-button"></div>
+  <canvas id="canvas"> </canvas>
+</div>
 <script>
-  import block from '../../public/block.wav'
-  import {metronome} from '../stores'
-  import * as Tone from 'tone';
+  import * as d3 from "d3";
+  import block from "../assets/wav/block.wav";
+  import { metronome } from "../stores";
+  import * as Tone from "tone";
 
-  const tone = new Tone.Oscillator({
-    type: "sine",
-    frequency: 440,
-    volume: -16
-  }).toDestination();
+  const container = document.getElementById("mute-container");
 
-  const player = new Tone.Player(block)
-  const tb = new Tone.ToneAudioBuffer();
+  // console.log(Tone.now());
+  const muteController = document.getElementById("mute-button");
+  // const canvas = d3
+  //   .select("canvas")
+  //   .append("svg")
+  //   .attr("width", 400)
+  //   .attr("height", 400);
+
+  // const tone = new Tone.Oscillator({
+  //   type: "sine",
+  //   frequency: 440,
+  //   volume: -16,
+  // }).toDestination();
+
+  // canvas.append("textarea").text(tone.now());
+
+  if(muteController) {
+    muteController.onmouseenter = function () {
+      Tone.start();
+    }
+  }
 
   metronome.subscribe((conf) => {
-    Tone.Transport.bpm.value = conf.bpm;
-    tb.onload = function() {
-      player.loop = true;
-      // Tone.Transport.scheduleRepeat(function(time) {
-      //   console.log("playing audio")
-      //   player.start(time)
-      // }, "4n")
+    if (container && muteController) {
+      muteController.onclick = function () {
+        Tone.Transport.bpm.value = conf.bpm;
+        if (conf.isPlaying) {
+          console.log("starting tone");
+          Tone.Transport.stop().start();
+          Tone.Transport.scheduleRepeat(function (time) {
+            const currColor = muteController.style.backgroundColor;
+            switch (currColor) {
+              case "red": {
+                muteController.style.backgroundColor = "black";
+              }
+              case "black": {
+                muteController.style.backgroundColor = "red";
+              }
+            }
+            // muteController.setAttribute("bgColor", "red");
+            console.log("playing audio", time);
+          }, "4n");
+        } else {
+          // muteController.setAttribute("bgColor", "red");
+          console.log("stopping tone");
+          Tone.Transport.stop();
+          // tone.stop();
+        }
+      };
     }
-
-    if(!conf.isMuted) {
-      console.log("starting")
-      // player.start();
-      tone.start()
-      // Tone.start();
-      // Tone.Transport.start();
-    } else {
-      console.log("stopping")
-      // Tone.stop();
-      tone.stop()
-      // Tone.Transport.stop();
-      // player.stop();
-    }
-  })
+  });
 </script>
+<style>
+  #mute-button {
+    width: 5em;
+    height: 2em;
+    background-color: black;
+  }
+</style>
