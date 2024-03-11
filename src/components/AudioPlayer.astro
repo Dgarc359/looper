@@ -8,43 +8,42 @@ import MuteController from "./MuteController.astro";
   <canvas id="canvas"> </canvas>
 </div>
 <script>
-  import * as d3 from "d3";
   import block from "../assets/wav/block.wav";
   import { metronome } from "../stores";
   import * as Tone from "tone";
+  import _ from "lodash";
 
   const container = document.getElementById("mute-container");
 
-  // console.log(Tone.now());
   const muteController = document.getElementById("mute-button");
-  // const canvas = d3
-  //   .select("canvas")
-  //   .append("svg")
-  //   .attr("width", 400)
-  //   .attr("height", 400);
 
-  // const tone = new Tone.Oscillator({
-  //   type: "sine",
-  //   frequency: 440,
-  //   volume: -16,
-  // }).toDestination();
-
-  // canvas.append("textarea").text(tone.now());
-
-  if(muteController) {
+  if (muteController) {
     muteController.onmouseenter = function () {
       Tone.start();
-    }
+    };
   }
+
+  console.log(`metronome: ${JSON.stringify(metronome.get())}`);
 
   metronome.subscribe((conf) => {
     if (container && muteController) {
       muteController.onclick = function () {
+        console.log(`current conf: ${JSON.stringify(conf)}`);
+        const metronomeAudioPlayer: Tone.Player = new Tone.Player({
+          loop: false,
+          onerror: (err) => Promise.reject(err),
+          onload: () => Promise.resolve(metronomeAudioPlayer),
+          url: block,
+        });
+
+        metronomeAudioPlayer.toDestination();
         Tone.Transport.bpm.value = conf.bpm;
-        if (conf.isPlaying) {
+        if (!conf.isPlaying) {
           console.log("starting tone");
+          
           Tone.Transport.stop().start();
-          Tone.Transport.scheduleRepeat(function (time) {
+          const scheduleId = Tone.Transport.scheduleRepeat(function (time) {
+            metronomeAudioPlayer.start();
             const currColor = muteController.style.backgroundColor;
             switch (currColor) {
               case "red": {
@@ -54,14 +53,20 @@ import MuteController from "./MuteController.astro";
                 muteController.style.backgroundColor = "red";
               }
             }
-            // muteController.setAttribute("bgColor", "red");
             console.log("playing audio", time);
           }, "4n");
+
+          metronome.set(
+            _.merge(metronome.get(), {
+              isPlaying: true,
+            })
+          );
         } else {
-          // muteController.setAttribute("bgColor", "red");
-          console.log("stopping tone");
+          metronomeAudioPlayer.stop().dispose();
+          console.log(`Attempting to stop tone`);
           Tone.Transport.stop();
-          // tone.stop();
+          Tone.Transport.cancel(0);
+          metronome.set(_.merge(metronome.get(), { isPlaying: false }));
         }
       };
     }
