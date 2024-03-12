@@ -8,11 +8,14 @@ const {
 } = Astro.props;
 ---
 <div id="record">
-  <strong id="recording-icon">Record</strong>
+  <h1 id="title"><strong>Looper</strong></h1>
   <section id="sound"></section>
 </div>
+<div id = "record-button">
+  <img id="recording-icon" src="Microphone.svg" alt="record button"/>
+</div>
 <script>
-  const record = document.getElementById("record");
+  const record = document.getElementById("record-button");
   const sound = document.getElementById("sound");
   const icon = document.getElementById("recording-icon");
 
@@ -35,11 +38,11 @@ const {
             console.log("state", mediaRecorder.state);
             if (mediaRecorder.state === "inactive") {
               mediaRecorder.start();
-              record.style.background = "red";
-              icon.innerText = "Recording";
+              record.style.backgroundColor = "red";
+              // icon.innerText = "Recording";
             } else {
               mediaRecorder.stop();
-              record.style.background = "black";
+              record.style.background = "green";
               icon.innerText = "Playing";
             }
           };
@@ -71,5 +74,27 @@ const {
 <style>
   .button {
     cursor: pointer;
+  }
+  #recording-icon {
+    cursor: pointer;
+  }
+  img {
+    width: 40vw;
+  }
+  #record {
+    display: flex;
+    justify-content: center;
+  }
+  #record-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 5vw;
+    margin-left: 100px;
+    border-radius: 50%;
+    width: 40vw;
+    background-color: green;
+  }
+  #title {
+    font-size: 4rem;
   }
 </style>

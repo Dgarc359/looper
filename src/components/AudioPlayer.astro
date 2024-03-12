@@ -1,10 +1,10 @@
 ---
-import MuteController from "./MuteController.astro";
+
 ---
 
 <div id="mute-container">
-  <MuteController id="mute-controller" />
-  <div id="mute-button"></div>
+  
+  <img id ="mute-button" src="play-pause-button.svg" alt="Play/Pause Button"/>
   <canvas id="canvas"> </canvas>
 </div>
 <script>
@@ -74,8 +74,12 @@ import MuteController from "./MuteController.astro";
 </script>
 <style>
   #mute-button {
-    width: 5em;
-    height: 2em;
-    background-color: black;
+    width: 4em;
+    height: 4em;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  #mute-container {
+    background-color: gray;
   }
 </style>
