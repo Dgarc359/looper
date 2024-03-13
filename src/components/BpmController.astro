@@ -1,8 +1,8 @@
 ---
 ---
 <div id="bpm-controller">
-  <h5>Pick your BPM</h5>
-  <div id="controls">
+  <h5 id="bpm-title">BPM</h5>
+  <div id="bpm-container">
     <div id="decrease">-</div>
     <div id="bpm"></div>
     <div id="increase">+</div>
@@ -38,11 +38,14 @@
 </script>
 <style>
   #bpm-controller {
-    background-color: gray;
+    font-size: 30px;
+    width: 5em;
+    height: 5em;
+    text-align: center;
   }
-  #controls {
-    display: flex;
+  #bpm-container {
     gap: 1rem;
+    display: inline-flex;
   }
 
   #increase, #decrease {
@@ -53,4 +56,9 @@
   #bpm {
     user-select: none;
   }
+  #bpm-title {
+    margin: auto;
+    
+  }
+  
 </style>

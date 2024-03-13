@@ -1,12 +1,13 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import AudioController from '../components/AudioController.astro'
+import Layout from "../layouts/Layout.astro";
+import AudioController from "../components/AudioController.astro";
 ---
 
 <Layout title="Welcome to Astro.">
-	<main>
-    <AudioController/>
-	</main>
+		<main>
+			<AudioController />
+		</main>
+		
 </Layout>
 
 <style>
@@ -45,7 +46,10 @@ import AudioController from '../components/AudioController.astro'
 	.instructions {
 		margin-bottom: 2rem;
 		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
+		background: linear-gradient(
+			rgba(var(--accent-dark), 66%),
+			rgba(var(--accent-dark), 33%)
+		);
 		padding: 1.5rem;
 		border-radius: 8px;
 	}
@@ -66,4 +70,6 @@ import AudioController from '../components/AudioController.astro'
 		gap: 2rem;
 		padding: 0;
 	}
+	
+	
 </style>
