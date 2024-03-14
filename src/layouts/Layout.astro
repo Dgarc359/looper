@@ -4,6 +4,7 @@ interface Props {
 }
 const { title } = Astro.props;
 ---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -16,6 +17,7 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<slot />
+		
 	</body>
 </html>
 <style is:global>
@@ -32,8 +34,10 @@ const { title } = Astro.props;
 	}
 	html {
 		font-family: system-ui, sans-serif;
-		background: #13151a;
+		background: #241d28;
 		background-size: 224px;
+		height: 100%;
+		overflow-y: hidden;
 	}
 	code {
 		font-family:
@@ -46,4 +50,9 @@ const { title } = Astro.props;
 			Courier New,
 			monospace;
 	}
+	body {
+		margin: 0px !important;
+		height: 100%;
+	}
+	
 </style>

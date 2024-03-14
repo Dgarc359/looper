@@ -1,53 +1,69 @@
 ---
+
 ---
+
 <div id="bpm-controller">
-  <h5>Pick your BPM</h5>
-  <div id="controls">
-    <div id="increase">^</div>
+  <h5 id="bpm-title">BPM</h5>
+  <div id="bpm-container">
+    <div id="decrease">-</div>
     <div id="bpm"></div>
-    <div id="decrease">v</div>
+    <div id="increase">+</div>
   </div>
 </div>
 <script>
   import { metronome } from "../stores";
-  import _ from 'lodash';
+  import _ from "lodash";
   const bpmDiv = document.getElementById("bpm");
   const increaseBpm = document.getElementById("increase");
   const decreaseBpm = document.getElementById("decrease");
 
-  if (bpmDiv) {
-    metronome.subscribe((b) => {
-      bpmDiv.innerText = b.bpm.toString()
-      console.log("bpm", metronome.get().bpm)
-    });
-  }
+  metronome.subscribe((b) => {
+    if (bpmDiv) {
+      bpmDiv.innerText = metronome.get().bpm.toString();
+      console.log("bpm", metronome.get().bpm, b);
+    }
+  });
 
   if (increaseBpm) {
     increaseBpm.addEventListener("click", () => {
-      metronome.set(_.merge(metronome.get(), {bpm: metronome.get().bpm + 1}));
+      const oldMetronome = _.cloneDeep(metronome.get());
+      const newMetronome = _.merge(oldMetronome,{ bpm: oldMetronome.bpm + 1 })
+      metronome.set(newMetronome);
       console.log("clicked", metronome.get());
     });
   }
 
   if (decreaseBpm) {
     decreaseBpm.addEventListener("click", () => {
-      metronome.set(_.merge(metronome.get(), {bpm: metronome.get().bpm - 1}));
+      const oldMetronome = _.cloneDeep(metronome.get());
+      const newMetronome = _.merge(oldMetronome,{ bpm: oldMetronome.bpm - 1 })
+      metronome.set(newMetronome);
       console.log("clicked", metronome.get());
     });
   }
 </script>
 <style>
-  #controls {
-    display: flex;
+  #bpm-controller {
+    font-size: 30px;
+    width: 5em;
+    height: 5em;
+    text-align: center;
+  }
+  #bpm-container {
     gap: 1rem;
+    display: inline-flex;
   }
 
-  #increase, #decrease {
+  #increase,
+  #decrease {
     cursor: pointer;
     user-select: none;
   }
 
   #bpm {
     user-select: none;
+  }
+  #bpm-title {
+    margin: auto;
   }
 </style>
